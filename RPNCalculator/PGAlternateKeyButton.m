@@ -28,7 +28,9 @@
 
 @interface PGAlternateKeyButton ()
 
+@property (assign, nonatomic) BOOL usesAlternateKeyProperties;
 @property (readwrite, strong, nonatomic) id eventMonitor;
+
 @property (readwrite, copy, nonatomic) NSString *originalTitle;
 @property (readwrite, strong, nonatomic) id originalTarget;
 @property (assign, nonatomic) SEL originalAction;

@@ -31,6 +31,18 @@
 #import "PGRPNCalculator.h"
 #import "PGAlternateKeyButton.h"
 
+/*
+ RPN calculators typically display their operand stack with the most recent item at the bottom. Subclassing
+ NSTableView to do this would be too much work. Instead, our table view has a fixed number of visible rows,
+ which we’ll call R. If the RPN calculator’s stack has fewer than R elements (let’s call it E), we put R - E
+ empty rows at the top of the table. Keep that in mind while looking at the table view code.
+ 
+ Also, the current number that the user is building is never on the operand stack until the last possible
+ moment, i.e., when it has to be used in a calculation. After an operation, the result is popped off the 
+ operand stack and put into our input string so that the user can edit it some more. A lot of the code here
+ is basically for manipulating the input string and making sure it’s pushed onto/popped off the operand stack
+ at the appropriate time.
+*/
 
 #pragma mark Constants
 

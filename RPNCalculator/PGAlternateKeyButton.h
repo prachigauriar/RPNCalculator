@@ -28,7 +28,6 @@
 
 @interface PGAlternateKeyButton : NSButton
 
-@property (assign, nonatomic) BOOL usesAlternateKeyProperties;
 @property (readwrite, copy, nonatomic) NSString *alternateKeyTitle;
 @property (readwrite, strong, nonatomic) id alternateKeyTarget;
 @property (assign, nonatomic) SEL alternateKeyAction;

@@ -80,8 +80,11 @@ int main(int argc, const char * argv[])
         [numberFormatter setMaximumFractionDigits:12];
         
         NSArray *arguments = PGCommandLineArgumentsAsStrings(argc - 1, argv + 1);
-        NSArray *tokens = [[arguments componentsJoinedByString:@" "] componentsSeparatedByString:@" "];
+        NSString *expression = [arguments componentsJoinedByString:@" "];
+        NSArray *tokens = [expression componentsSeparatedByString:@" "];
         
+        printf("Evaluating expression: %s\n", [expression UTF8String]);
+
         // For each token in the expression
         for (NSString *token in tokens) {
             if ([token isEqualToString:@""]) continue;

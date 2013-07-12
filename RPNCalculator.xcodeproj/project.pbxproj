@@ -47,6 +47,8 @@
 		4C0D0FD016D5B61F00BEC0C9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4CC2D6B2179035480023C93A /* PGUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGUtilities.h; sourceTree = "<group>"; };
 		4CC2D6B3179035480023C93A /* PGUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGUtilities.m; sourceTree = "<group>"; };
+		4CC2D6B517904EB70023C93A /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.md; sourceTree = "<group>"; };
+		4CC2D6B617904EB70023C93A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		4CD33C91168F67BC00C38BC1 /* rpncalc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rpncalc; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CD33C93168F67BC00C38BC1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4CD33C96168F67BC00C38BC1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -145,6 +147,8 @@
 		4CDBE8DB168D5248006B9833 = {
 			isa = PBXGroup;
 			children = (
+				4CC2D6B517904EB70023C93A /* LICENSE.md */,
+				4CC2D6B617904EB70023C93A /* README.md */,
 				4C3865DA16A87BA000D73055 /* Model */,
 				4CD33C95168F67BC00C38BC1 /* rpncalc */,
 				4C0D0FAE16D5B5A800BEC0C9 /* RPNCalculator */,
