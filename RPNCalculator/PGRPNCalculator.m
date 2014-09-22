@@ -25,7 +25,6 @@
 //
 
 #import "PGRPNCalculator.h"
-#import <math.h>
 
 
 #pragma mark Constants
@@ -38,7 +37,7 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 @interface PGRPNCalculator ()
 
-@property (strong, nonatomic) NSMutableArray *operandStack;
+@property (nonatomic, strong) NSMutableArray *operandStack;
 
 - (double)popDouble;
 - (double)popAngleAsDouble;
@@ -51,17 +50,17 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 @implementation PGRPNCalculator
 
-+ (PGRPNCalculator *)rpnCalculator
++ (PGRPNCalculator *)RPNCalculator
 {
     return [[self alloc] init];
 }
 
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.operandStack = [[NSMutableArray alloc] init];
+        _operandStack = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -84,13 +83,13 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 - (NSNumber *)objectInOperandStackAtIndex:(NSUInteger)index
 {
-    return [self.operandStack objectAtIndex:index];
+    return self.operandStack[index];
 }
 
 
 - (void)replaceObjectInOperandStackAtIndex:(NSUInteger)index withObject:(NSNumber *)number
 {
-    [self.operandStack replaceObjectAtIndex:index withObject:number];
+    self.operandStack[index] = number;
 }
 
 
@@ -114,7 +113,7 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 - (void)pushNumber:(NSNumber *)number
 {
-    [self insertObject:number inOperandStackAtIndex:[self countOfOperandStack]];
+    [self insertObject:number inOperandStackAtIndex:self.countOfOperandStack];
 }
 
 
@@ -127,7 +126,7 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 - (NSNumber *)popNumber
 {
     NSNumber *number = [self xValue];
-    [self removeObjectFromOperandStackAtIndex:[self countOfOperandStack] - 1];
+    [self removeObjectFromOperandStackAtIndex:self.countOfOperandStack - 1];
     return number;
 }
 
@@ -146,13 +145,13 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 - (NSNumber *)xValue
 {
-    return [self objectInOperandStackAtIndex:[self countOfOperandStack] - 1];
+    return [self objectInOperandStackAtIndex:self.countOfOperandStack - 1];
 }
 
 
 - (NSNumber *)yValue
 {
-    return [self objectInOperandStackAtIndex:[self countOfOperandStack] - 2];
+    return [self objectInOperandStackAtIndex:self.countOfOperandStack - 2];
 }
 
 
@@ -167,14 +166,20 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 - (void)rollOperandStackTowardsTop
 {
-    if ([self countOfOperandStack] < 2) return;
+    if (self.countOfOperandStack < 2) {
+        return;
+    }
+
     [self insertObject:[self popNumber] inOperandStackAtIndex:0];
 }
 
 
 - (void)rollOperandStackTowardsBottom
 {
-    if ([self countOfOperandStack] < 2) return;
+    if (self.countOfOperandStack < 2) {
+        return;
+    }
+
     NSNumber *bottom = [self objectInOperandStackAtIndex:0];
     [self removeObjectFromOperandStackAtIndex:0];
     [self pushNumber:bottom];
@@ -308,6 +313,7 @@ static const double PGDegreesToRadiansFactor = M_PI / 180;
 
 
 #pragma mark - Exponentiation
+
 - (void)exponentialBaseE
 {
     [self pushNumber:@(exp([self popDouble]))];

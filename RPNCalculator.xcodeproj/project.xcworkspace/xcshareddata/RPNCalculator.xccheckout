@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7FC62558-3342-407F-AF75-94431D10EE8B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RPNCalculator</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>36B3DE82E2BD98BA846AB87A287A7763B7A83FB1</key>
+		<string>github.com:prachigauriar/RPNCalculator.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RPNCalculator.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>36B3DE82E2BD98BA846AB87A287A7763B7A83FB1</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:prachigauriar/RPNCalculator.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>36B3DE82E2BD98BA846AB87A287A7763B7A83FB1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>36B3DE82E2BD98BA846AB87A287A7763B7A83FB1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RPNCalculator</string>
+		</dict>
+	</array>
+</dict>
+</plist>

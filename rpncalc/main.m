@@ -73,13 +73,13 @@ int main(int argc, const char * argv[])
                                            @"logY" : @"logBaseY",
                                            @"swap" : @"swap" };
         
-        PGRPNCalculator *calculator = [PGRPNCalculator rpnCalculator];
+        PGRPNCalculator *calculator = [[PGRPNCalculator alloc] init];
         
         NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setMinimumIntegerDigits:1];
-        [numberFormatter setMaximumFractionDigits:12];
+        numberFormatter.minimumIntegerDigits = 1;
+        numberFormatter.maximumFractionDigits = 12;
         
-        NSArray *arguments = PGCommandLineArgumentsAsStrings(argc - 1, argv + 1);
+        NSArray *arguments = [[[NSProcessInfo processInfo] arguments] subarrayWithRange:NSMakeRange(1, argc - 1)];
         NSString *expression = [arguments componentsJoinedByString:@" "];
         NSArray *tokens = [expression componentsSeparatedByString:@" "];
         
@@ -87,7 +87,9 @@ int main(int argc, const char * argv[])
 
         // For each token in the expression
         for (NSString *token in tokens) {
-            if ([token isEqualToString:@""]) continue;
+            if ([token isEqualToString:@""]) {
+                continue;
+            }
 
             // Try to interpret the token as a number. If that works, push it and go to the next token
             NSNumber *number = [numberFormatter numberFromString:token];

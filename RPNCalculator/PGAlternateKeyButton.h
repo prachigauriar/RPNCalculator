@@ -28,9 +28,9 @@
 
 @interface PGAlternateKeyButton : NSButton
 
-@property (readwrite, copy, nonatomic) NSString *alternateKeyTitle;
-@property (readwrite, strong, nonatomic) id alternateKeyTarget;
-@property (assign, nonatomic) SEL alternateKeyAction;
-@property (assign, nonatomic) NSInteger alternateKeyTag;
+@property (nonatomic, copy) NSString *alternateKeyTitle;
+@property (nonatomic, strong) id alternateKeyTarget;
+@property (nonatomic, assign) SEL alternateKeyAction;
+@property (nonatomic, assign) NSInteger alternateKeyTag;
 
 @end

@@ -26,8 +26,6 @@
 
 #import "PGRPNCalculatorController.h"
 
-#import <math.h>
-
 #import "PGRPNCalculator.h"
 #import "PGAlternateKeyButton.h"
 
@@ -51,20 +49,37 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 #pragma mark - Private Interface
 
-@interface PGRPNCalculatorController ()
+@interface PGRPNCalculatorController () <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
 
-@property(readwrite, retain) PGRPNCalculator *rpnCalculator;
-@property(readwrite, retain) NSMutableString *inputString;
+@property (nonatomic, weak) IBOutlet NSWindow *window;
+@property (nonatomic, weak) IBOutlet NSTableView *stackTableView;
 
-@property(readwrite, retain) NSNumberFormatter *numberFormatter;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *divideModButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *exp2LgButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *expELnButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *exp10LogButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *squaredCubedButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *squareRootCubeRootButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *roundTruncButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *floorCeilButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *rollDownRollUpButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *clearAllClearButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *sinArcsinButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *cosArccosButton;
+@property (nonatomic, weak) IBOutlet PGAlternateKeyButton *tanArctanButton;
 
-@property(readwrite, assign) BOOL hasPushedPreviousResult;
-@property(readwrite, assign) BOOL hasUpdatedOperand;
+@property (nonatomic, strong, readonly) PGRPNCalculator *RPNCalculator;
+@property (nonatomic, strong, readonly) NSMutableString *inputString;
+@property (nonatomic, assign, readonly) double inputStringDoubleValue;
+@property (nonatomic, assign, readonly) NSUInteger inputStringRowIndex;
+
+@property(nonatomic, strong, readonly) NSNumberFormatter *numberFormatter;
+
+@property(nonatomic, assign) BOOL hasPushedPreviousResult;
+@property(nonatomic, assign) BOOL hasUpdatedOperand;
 
 - (void)clearOperandIfNotUpdated;
 - (void)pushPreviousResultIfNecessary;
-- (double)inputStringDoubleValue;
-- (NSUInteger)inputStringRowIndex;
 - (void)scrollToInputStringRow;
 - (void)pushInputString;
 - (void)performUnaryOperation:(SEL)selector;
@@ -77,18 +92,18 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 @implementation PGRPNCalculatorController
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.rpnCalculator = [[PGRPNCalculator alloc] init];
+        _RPNCalculator = [[PGRPNCalculator alloc] init];
 
-        self.inputString = [[NSMutableString alloc] initWithString:@"0"];
-        self.hasPushedPreviousResult = YES;
+        _inputString = [[NSMutableString alloc] initWithString:@"0"];
+        _hasPushedPreviousResult = YES;
         
-        self.numberFormatter = [[NSNumberFormatter alloc] init];
-        [self.numberFormatter setMinimumIntegerDigits:1];
-        [self.numberFormatter setMaximumFractionDigits:12];
+        _numberFormatter = [[NSNumberFormatter alloc] init];
+        _numberFormatter.minimumIntegerDigits = 1;
+        _numberFormatter.maximumFractionDigits = 12;
     }
     
     return self;
@@ -97,6 +112,8 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.divideModButton.alternateKeyTitle = @"Mod";
     self.divideModButton.alternateKeyTarget = self;
     self.divideModButton.alternateKeyAction = @selector(mod:);
@@ -155,7 +172,10 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (void)clearOperandIfNotUpdated
 {
-    if (self.hasUpdatedOperand) return;
+    if (self.hasUpdatedOperand) {
+        return;
+    }
+
     [self.inputString deleteCharactersInRange:NSMakeRange(0, self.inputString.length)];
     self.hasUpdatedOperand = YES;
 }
@@ -163,7 +183,10 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (void)pushPreviousResultIfNecessary
 {
-    if (self.hasPushedPreviousResult) return;
+    if (self.hasPushedPreviousResult) {
+        return;
+    }
+
     [self pushInputString];
     self.hasPushedPreviousResult = YES;
 }
@@ -177,7 +200,7 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (NSUInteger)inputStringRowIndex
 {
-    NSUInteger operandStackDepth = [self.rpnCalculator countOfOperandStack];
+    NSUInteger operandStackDepth = [self.RPNCalculator countOfOperandStack];
     return (operandStackDepth >= PGVisibleRowCount) ? operandStackDepth : PGVisibleRowCount - 1;
 }
 
@@ -187,9 +210,10 @@ static const NSUInteger PGVisibleRowCount = 4;
     [self.stackTableView scrollRowToVisible:[self inputStringRowIndex]];
 }
 
+
 - (void)pushInputString
 {
-    [self.rpnCalculator pushNumber:[self.numberFormatter numberFromString:self.inputString]];
+    [self.RPNCalculator pushNumber:[self.numberFormatter numberFromString:self.inputString]];
     self.hasUpdatedOperand = NO;
 }
 
@@ -200,10 +224,10 @@ static const NSUInteger PGVisibleRowCount = 4;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [self.rpnCalculator performSelector:selector];
+    [self.RPNCalculator performSelector:selector];
 #pragma clang diagnostic pop
     
-    [self.inputString setString:[self.numberFormatter stringFromNumber:[self.rpnCalculator popNumber]]];
+    [self.inputString setString:[self.numberFormatter stringFromNumber:[self.RPNCalculator popNumber]]];
     self.hasPushedPreviousResult = NO;
     [self.stackTableView reloadData];
     [self scrollToInputStringRow];
@@ -212,7 +236,7 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (void)performBinaryOperation:(SEL)selector
 {
-    if ([self.rpnCalculator countOfOperandStack] == 0) {
+    if ([self.RPNCalculator countOfOperandStack] == 0) {
         NSBeep();
         return;
     }
@@ -221,10 +245,10 @@ static const NSUInteger PGVisibleRowCount = 4;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    [self.rpnCalculator performSelector:selector];
+    [self.RPNCalculator performSelector:selector];
 #pragma clang diagnostic pop
     
-    [self.inputString setString:[self.numberFormatter stringFromNumber:[self.rpnCalculator popNumber]]];
+    [self.inputString setString:[self.numberFormatter stringFromNumber:[self.RPNCalculator popNumber]]];
     self.hasPushedPreviousResult = NO;
     [self.stackTableView reloadData];
     [self scrollToInputStringRow];
@@ -236,7 +260,9 @@ static const NSUInteger PGVisibleRowCount = 4;
 - (IBAction)appendDigit:(id)sender
 {
     NSUInteger digit = [sender tag];
-    if (digit == 0 && [self.inputString isEqualToString:@"0"]) return;
+    if (digit == 0 && [self.inputString isEqualToString:@"0"]) {
+        return;
+    }
         
     [self pushPreviousResultIfNecessary];
     [self clearOperandIfNotUpdated];
@@ -278,9 +304,9 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (IBAction)clearAll:(id)sender
 {
-    NSUInteger stackDepth = [self.rpnCalculator countOfOperandStack];
-    while(stackDepth--) {
-        [self.rpnCalculator popNumber];
+    NSUInteger stackDepth = [self.RPNCalculator countOfOperandStack];
+    while (stackDepth--) {
+        [self.RPNCalculator popNumber];
     }
     
     [self.inputString setString:@"0"];
@@ -293,7 +319,7 @@ static const NSUInteger PGVisibleRowCount = 4;
 - (IBAction)delete:(id)sender
 {
     if (!self.hasPushedPreviousResult) {
-        [self clear:self];
+        [self clear:nil];
         return;
     }
     
@@ -314,8 +340,8 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (IBAction)drop:(id)sender
 {
-    if ([self.rpnCalculator countOfOperandStack] != 0) {
-        NSNumber *number = [self.rpnCalculator popNumber];
+    if (self.RPNCalculator.countOfOperandStack != 0) {
+        NSNumber *number = [self.RPNCalculator popNumber];
         [self.inputString setString:[self.numberFormatter stringFromNumber:number]];
         self.hasPushedPreviousResult = NO;
     } else {
@@ -578,21 +604,24 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 #pragma mark - Constant Insertion
 
-- (IBAction)insertConstantE:(id)sender
+- (void)insertConstantValue:(NSNumber *)constant
 {
     [self pushPreviousResultIfNecessary];
     [self clearOperandIfNotUpdated];
-    [self.inputString setString:[self.numberFormatter stringFromNumber:@(M_E)]];
+    [self.inputString setString:[self.numberFormatter stringFromNumber:constant]];
     [self.stackTableView reloadData];
+}
+
+
+- (IBAction)insertConstantE:(id)sender
+{
+    [self insertConstantValue:@(M_E)];
 }
 
 
 - (IBAction)insertConstantPi:(id)sender
 {
-    [self pushPreviousResultIfNecessary];
-    [self clearOperandIfNotUpdated];
-    [self.inputString setString:[self.numberFormatter stringFromNumber:@(M_PI)]];
-    [self.stackTableView reloadData];
+    [self insertConstantValue:@(M_PI)];
 }
 
 
@@ -600,7 +629,7 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (IBAction)radianDegreeModeChanged:(id)sender
 {
-    self.rpnCalculator.usesDegrees = ([sender selectedSegment] == 1);
+    self.RPNCalculator.usesDegrees = ([sender selectedSegment] == 1);
 }
 
 
@@ -608,18 +637,18 @@ static const NSUInteger PGVisibleRowCount = 4;
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-    NSUInteger rowCount = [self.rpnCalculator countOfOperandStack] + 1;
-    return rowCount >= PGVisibleRowCount ? rowCount : PGVisibleRowCount;
+    NSUInteger rowCount = self.RPNCalculator.countOfOperandStack + 1;
+    return MAX(rowCount, PGVisibleRowCount);
 }
 
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    NSUInteger rowCount = [self.rpnCalculator countOfOperandStack] + 1;
+    NSUInteger rowCount = self.RPNCalculator.countOfOperandStack + 1;
 
     // If we have PGVisibleRowCount or more rows, we just make sure that the last item is the operand
     if (rowCount >= PGVisibleRowCount) {
-        return (row == rowCount - 1) ? self.inputString : [self.numberFormatter stringFromNumber:[self.rpnCalculator objectInOperandStackAtIndex:row]];
+        return (row == rowCount - 1) ? self.inputString : [self.numberFormatter stringFromNumber:[self.RPNCalculator objectInOperandStackAtIndex:row]];
     }
     
     if (row < PGVisibleRowCount - rowCount) {
@@ -627,7 +656,7 @@ static const NSUInteger PGVisibleRowCount = 4;
         return nil;
     } else if (row < PGVisibleRowCount - 1) {
         // PGVisibleRowCount - countOfOperandStack <= row < PGVisibleRowCount - 1
-        return [self.numberFormatter stringFromNumber:[self.rpnCalculator objectInOperandStackAtIndex:(rowCount - PGVisibleRowCount) + row]];
+        return [self.numberFormatter stringFromNumber:[self.RPNCalculator objectInOperandStackAtIndex:(rowCount - PGVisibleRowCount) + row]];
     } else {
         // The last visible row is the input string
         return self.inputString;
@@ -647,6 +676,5 @@ static const NSUInteger PGVisibleRowCount = 4;
 {
     return YES;
 }
-
 
 @end

@@ -28,25 +28,7 @@
 
 @class PGRPNCalculator, PGAlternateKeyButton;
 
-@interface PGRPNCalculatorController : NSObject <NSApplicationDelegate, NSTableViewDataSource, NSTableViewDelegate>
-
-@property (weak, nonatomic) IBOutlet NSWindow *window;
-@property (weak, nonatomic) IBOutlet NSTableView *stackTableView;
-
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *divideModButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *exp2LgButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *expELnButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *exp10LogButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *squaredCubedButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *squareRootCubeRootButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *roundTruncButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *floorCeilButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *rollDownRollUpButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *clearAllClearButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *sinArcsinButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *cosArccosButton;
-@property (weak, nonatomic) IBOutlet PGAlternateKeyButton *tanArctanButton;
-
+@interface PGRPNCalculatorController : NSObject
 
 - (IBAction)appendDigit:(id)sender;
 - (IBAction)appendDecimalPoint:(id)sender;

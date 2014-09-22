@@ -230,7 +230,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = PG;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Prachi Gauriar";
 			};
 			buildConfigurationList = 4CDBE8E0168D5248006B9833 /* Build configuration list for PBXProject "RPNCalculator" */;
@@ -368,7 +368,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -398,7 +397,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;

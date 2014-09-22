@@ -28,13 +28,13 @@
 
 @interface PGAlternateKeyButton ()
 
-@property (assign, nonatomic) BOOL usesAlternateKeyProperties;
-@property (readwrite, strong, nonatomic) id eventMonitor;
+@property (nonatomic, assign) BOOL usesAlternateKeyProperties;
+@property (strong, nonatomic) id eventMonitor;
 
-@property (readwrite, copy, nonatomic) NSString *originalTitle;
-@property (readwrite, strong, nonatomic) id originalTarget;
-@property (assign, nonatomic) SEL originalAction;
-@property (assign, nonatomic) NSInteger originalTag;
+@property (nonatomic, copy) NSString *originalTitle;
+@property (nonatomic, strong) id originalTarget;
+@property (nonatomic, assign) SEL originalAction;
+@property (nonatomic, assign) NSInteger originalTag;
 
 - (void)setupEventMonitor;
 
@@ -43,7 +43,7 @@
 
 @implementation PGAlternateKeyButton
 
-- (id)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -56,8 +56,9 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self setupEventMonitor];
-        
+
     self.originalTitle = self.title;
     self.originalTarget = self.target;
     self.originalAction = self.action;
@@ -67,7 +68,9 @@
 
 - (void)setupEventMonitor
 {
-    if (self.eventMonitor) return;
+    if (self.eventMonitor) {
+        return;
+    }
     
     __weak PGAlternateKeyButton *blockSelf = self;
     self.eventMonitor = [NSEvent addLocalMonitorForEventsMatchingMask:NSFlagsChangedMask handler:^(NSEvent *event) {

@@ -28,20 +28,19 @@
 
 @interface PGRPNCalculator : NSObject
 
-@property (assign, nonatomic) BOOL usesDegrees;
+@property (nonatomic, assign) BOOL usesDegrees;
 
-+ (PGRPNCalculator *)rpnCalculator;
+@property (nonatomic, readonly) NSUInteger countOfOperandStack;
+@property (nonatomic, readonly, strong) NSEnumerator *operandStackEnumerator;
+@property (nonatomic, readonly, strong) NSEnumerator *operandStackReverseEnumerator;
+
 
 #pragma mark - Operand Stack Management
 
-- (NSUInteger)countOfOperandStack;
 - (void)insertObject:(NSNumber *)number inOperandStackAtIndex:(NSUInteger)index;
 - (NSNumber *)objectInOperandStackAtIndex:(NSUInteger)index;
 - (void)replaceObjectInOperandStackAtIndex:(NSUInteger)index withObject:(NSNumber *)object;
 - (void)removeObjectFromOperandStackAtIndex:(NSUInteger)index;
-
-- (NSEnumerator *)operandStackEnumerator;
-- (NSEnumerator *)operandStackReverseEnumerator;
 
 - (void)pushNumber:(NSNumber *)number;
 - (NSNumber *)popNumber;
